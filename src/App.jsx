@@ -1,6 +1,12 @@
+import Header from "./components/Header";
+
+// Los componentes SIEMPRE deben iniciar con mayusculas. "App"
+
 function App() {
+  // El return es lo que muestra el componente en pantalla.
   return (
     <>
+      <Header/>
       <header class="py-5 header">
         <div class="container-xl">
           <div class="row justify-content-center justify-content-md-between">
