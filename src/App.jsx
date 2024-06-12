@@ -1,20 +1,26 @@
 import { useState } from "react";
-import Guitarr from "./components/Guitarr";
+import Guitar from "./components/Guitar";
 import Header from "./components/Header";
+import { db } from "./data/db";
 
 // Los componentes SIEMPRE deben iniciar con mayusculas. "App"
 
 function App() {
+  const [data, setData] = useState(db);
 
-  // Los estados o hooks se colocan antes del return y NO pueden ir dentro de funciones ni condicionales.
-  const [auth, setAuth] = useState(true)
+  //* Ahora como sería si quisieramos consumir datos de una API ?:
+  // const [data, setData] = useState([]) ----> Inicio el estate como un arreglo vacío
+
+  // useEffect(() => {
+  //   setData(db) ----> Siempre hay que modificar el estado con la funcion seteadora.
+  // }, [])
+
+  //* 1- Inicio el estate como un arreglo vacío
+  //* 2- Cuando el componente esté listo seteo el estate (con setData) la base de datos.
+
   
-  console.log(auth);
-  
-
-
-  // El return es lo que muestra el componente en pantalla.
   return (
+    // El return es lo que muestra el componente en pantalla.
     <>
       <Header />
 
@@ -22,8 +28,12 @@ function App() {
         <h2 className="text-center">Nuestra Colección</h2>
 
         <div className="row mt-5">
-          <Guitarr />
-
+          {data.map((guitar) => (
+            <Guitar
+              guitar={guitar}
+              key={guitar.id}
+            />
+          ))}
         </div>
       </main>
 
@@ -32,7 +42,7 @@ function App() {
           <p className="text-white text-center fs-4 mt-4 m-md-0">
             GuitarLA - Todos los derechos Reservados
           </p>
-        </div> 
+        </div>
       </footer>
     </>
   );
@@ -103,8 +113,6 @@ export default App;
 // }
 
 // export default MensajeConsola;
-
-
 
 //* Despues podemos encontrar muchos mas hooks
 // useReducer, useCallback, useMemo, useRef y varios más.
