@@ -3,26 +3,43 @@ import Guitar from "./components/Guitar";
 import Header from "./components/Header";
 import { db } from "./data/db";
 
+//* Ahora como sería si quisieramos consumir datos de una API ?:
 // Los componentes SIEMPRE deben iniciar con mayusculas. "App"
+// const [data, setData] = useState([]) ----> Inicio el estate como un arreglo vacío
+
+// useEffect(() => {
+//   setData(db) ----> Siempre hay que modificar el estado con la funcion seteadora.
+// }, [])
+
+//* 1- Inicio el estate como un arreglo vacío
+//* 2- Cuando el componente esté listo seteo el estate (con setData) la base de datos.
+
 
 function App() {
   const [data, setData] = useState(db);
+  const [cart, setCart] = useState([])
 
-  //* Ahora como sería si quisieramos consumir datos de una API ?:
-  // const [data, setData] = useState([]) ----> Inicio el estate como un arreglo vacío
 
-  // useEffect(() => {
-  //   setData(db) ----> Siempre hay que modificar el estado con la funcion seteadora.
-  // }, [])
+  const addToCart = (item) => {
+    // Que es la inmutabilidad en React. Cuando un State es inmutable podemos ir al enlace: https://doesitmutate.xyz/ 
 
-  //* 1- Inicio el estate como un arreglo vacío
-  //* 2- Cuando el componente esté listo seteo el estate (con setData) la base de datos.
+    const elementoExistente = cart.findIndex(guitar => guitar.id === item.id)
+    if(elementoExistente >= 0){
+      const updatedCart = [...cart]
+      updatedCart[elementoExistente].cantidad++
+      setCart(updatedCart)
+    } else {
+      item.cantidad = 1
+      setCart([...cart, item])
+    }
+  }
 
-  
   return (
     // El return es lo que muestra el componente en pantalla.
     <>
-      <Header />
+      <Header 
+        cart={cart}
+      />
 
       <main className="container-xl mt-5">
         <h2 className="text-center">Nuestra Colección</h2>
@@ -30,8 +47,11 @@ function App() {
         <div className="row mt-5">
           {data.map((guitar) => (
             <Guitar
-              guitar={guitar}
-              key={guitar.id}
+              key = {guitar.id}
+              guitar = {guitar}
+              // cart = {cart} => segun el profe se puede hacer de otra forma
+              setCart = {setCart}
+              addToCart = {addToCart}
             />
           ))}
         </div>
@@ -49,6 +69,10 @@ function App() {
 }
 
 export default App;
+
+
+
+
 
 //* Vamos a detallar los 3 hooks mas importantes y comunes de React:
 
